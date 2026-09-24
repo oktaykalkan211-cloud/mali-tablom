@@ -1,0 +1,28 @@
+name: Flutter APK Build
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: Create Flutter Project Structure
+        run: |
+          flutter create . --overwrite --project-name=mali_tablom
+          
+      - name: Build APK
+        run: flutter build apk --release
+        
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: mali-tablom-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
